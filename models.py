@@ -1,8 +1,9 @@
+import streamlit as st
 import tensorflow as tf
 import pickle
 
 @st.cache_resource
-def load_model(str: model):
+def load_model(model: str):
     path = "models/"
     {
         "NaiveBayes": lambda: pickle.load(open(path + "GaussianNB.model")),

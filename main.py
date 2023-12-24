@@ -7,13 +7,13 @@ from st_pages import Page, Section, show_pages, add_page_title
 show_pages(
     [
         Page("main.py", "РГР"),
-        Page("pages/about.py", "Об авторе"),
         Page("pages/about_dataset.py", "О датасете"),
         Page("pages/visualize.py", "Визуализация"),
         Page("pages/predict.py", "Предсказание модели"),
     ]
 )
 
-st.title('Расчетно-графическая работа')
+st.title("Расчетно-графическая работа")
 
-st.text('Тема: инференс моделей машинного обучения')
+st.text("Тема: инференс (вывод) машинного обучения")
+st.text("Выполнил: студент группы ФИТ-221 Калицкий Никита Николаевич")
