@@ -1,7 +1,4 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
-import pickle
 
 from st_pages import Page, Section, show_pages, add_page_title
 
@@ -20,5 +17,3 @@ show_pages(
 st.title('Расчетно-графическая работа')
 
 st.text('Тема: инференс моделей машинного обучения')
-
-import sklearn.gaussian_process
