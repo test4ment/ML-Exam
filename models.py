@@ -1,5 +1,6 @@
 import tensorflow as tf
 import pickle
+import streamlit as st
 
 @st.cache_resource
 def load_model(model: str):
