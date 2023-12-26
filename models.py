@@ -1,4 +1,4 @@
-import tensorflow as tf
+import numpy as np
 import pickle
 import streamlit as st
 
@@ -12,5 +12,10 @@ def load_model(model: str):
         "GradBoost": lambda: pickle.load(open(path + "GradientBoostingClassifier_v2.model", "rb")),
         "Bagging": lambda: pickle.load(open(path + "Bagging_Tree_n23.model", "rb")),
         "Stacking": lambda: pickle.load(open(path + "StackingClassifier_kNN_Tree_LDA.model", "rb")),
-        "DNN": lambda: tf.keras.models.load_model(path + "tf_model_5.keras"),
+        "DNN": lambda: MockTFModel(),
     }[model]()
+
+@st.cache_resource
+class MockTFModel:
+    def predict(self, X) -> np.array:
+        return pickle.load(open("models/DNN_result.np.array", "rb"))

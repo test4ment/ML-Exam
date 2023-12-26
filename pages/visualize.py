@@ -80,7 +80,7 @@ for column in df.columns:
 
     y = ((1 / (np.sqrt(2 * np.pi) * sigma)) * np.exp(-0.5 * (1 / sigma * (bins - mu))**2))
 
-    ax.plot(bins, y, '--')
+    ax.plot(bins, y, color = "darkblue")
 
     ax.set_title(column)
     st.pyplot(fig)
@@ -95,20 +95,28 @@ df_X = df.drop("quality", axis = 1)
 df_y = df["quality"]
 
 models = ["NaiveBayes", "GradBoost", "Bagging", "Stacking", 
-        #   "DNN"
+          "DNN"
           ]
 
-st.subheader(f"{models[0]}")
-md = load_model(models[0])
-report_df = pd.DataFrame(classification_report(df_y, md.predict(df_X), output_dict = True))
-st.dataframe(report_df)
+captions = {
+    "Bagging": "Использованы 29 слабых моделей деревьев решений",
+    "Stacking": "Использованы модели kNN, дерево решений и LDA",
+    "DNN": "16 слоёв по четыре нейрона с активацией relu; softmax на выходе"
+}
+
+for model in models:
+    st.subheader(model)
+    try:
+        st.caption(captions[model])
+    except KeyError:
+        pass
+    md = load_model(model)
+    report_df = pd.DataFrame(classification_report(df_y, md.predict(df_X), output_dict = True))
+    st.dataframe(report_df)
 
 
-fig, ax = plt.subplots(figsize = (10, 10))
-# bool_arr = (df_y == md.predict(df_X)).to_numpy()
+fig, ax = plt.subplots(figsize = (12, 12))
 
-# df_y = df_y.reset_index()
-st.write(df_y)
 bounds = {}
 
 for num, i in enumerate(np.unique(df_y), start = 4):
@@ -118,14 +126,18 @@ for num, i in enumerate(np.unique(df_y), start = 4):
 for num2, model in enumerate(models):
     md = load_model(model)
     bool_arr = (df_y == md.predict(df_X)).to_numpy()
-    st.write(sum(bool_arr) / len(bool_arr))
+    ax.annotate(f"{model} ({sum(bool_arr) / len(bool_arr) * 100:.1f}%)", (0, 1 - num2 + 0.40))
     for check, i in enumerate(bounds.values()):
-        color = "black" if check % 2 == 0 else "green"
-        ax.eventplot((np.argwhere(bool_arr[i[0] : (i[1] - 1)]).T + i[0]), linewidth = 0.1, color = color, linelength = 0.33, lineoffsets = num2)
-    # ax.eventplot((np.argwhere(bool_arr[i[0] : (i[1] - 1)]).T + i[0]), linewidth = 0.1, color = color, linelength = 0.33)
+        color = "black" if check % 2 == 0 else "darkgreen"
+        ax.eventplot((np.argwhere(bool_arr[i[0] : (i[1] - 1)]).T + i[0]), linewidth = 0.1, color = color, linelength = 0.75, lineoffsets = 1 - num2)
 
-ax.set_ylabel("bayes")
+l, ll = [], []
+for k, v in bounds.items():
+    l += [v[0], sum(v) / 2, v[1]]
+    ll += ["", str(k), ""]
+ax.set_xticks(l, ll)
 ax.set_xlim((0, df.shape[0]))
 ax.get_yaxis().set_ticks([])
-# ax.get_xaxis().set_ticks([4, 5, 6, 7])
+ax.set_xlabel("Качество вина")
+ax.set_title("Верные предсказания")
 st.pyplot(fig)
