@@ -33,9 +33,7 @@ with st.sidebar:
                                           args = (),
                                           )
 
-models = ["NaiveBayes", "GradBoost", "Bagging", "Stacking", 
-        #   "TF_DNN"
-          ]
+models = ["NaiveBayes", "GradBoost", "Bagging", "Stacking", "TF_DNN"]
 
 st.title("Предсказания моделей")
 X = np.fromiter((value for value in buttons.values()), float).reshape(1, -1)
@@ -48,12 +46,3 @@ for model in models:
     st.subheader(f"{model}: {int(prediction)}")
 
 st.header(f"Финальный результат: {int(stats.mode(y).mode)}")
-
-import tensorflow as tf
-import keras
-dnn = load_model("TF_DNN")
-print(X)
-print(dnn.predict(X))
-
-# st.data_editor
-# https://docs.streamlit.io/library/api-reference/data/st.data_editor

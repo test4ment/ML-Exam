@@ -4,7 +4,7 @@ import streamlit as st
 import tensorflow as tf
 import keras
 
-@st.cache_resource
+# @st.cache_resour
 def load_model(model: str):
     path = "models/"
     return {
@@ -28,8 +28,5 @@ class TFModelAdapter:
         self.model = keras.models.load_model(path_to_h5)
     
     def predict(self, X: np.array) -> int:
-        print(X)
-        prediction = (self.model.predict(X))
-        # print(prediction)
-        # return prediction
-        return (prediction)
+        prediction = np.array([np.argmax(i) for i in self.model.predict(X)]) + 4
+        return prediction

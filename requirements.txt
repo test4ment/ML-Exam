@@ -1,5 +1,7 @@
-matplotlib==3.8.2
-pandas==2.1.4
-st_pages==0.4.5
-streamlit==1.29.0
-tensorflow==2.15.0.post1
+matplotlib
+pandas
+st_pages
+streamlit
+tensorflow
+scipy
+scikit-learn==1.2.2
