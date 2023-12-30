@@ -45,4 +45,4 @@ for model in models:
     y += [prediction]
     st.subheader(f"{model}: {int(prediction)}")
 
-st.header(f"Финальный результат: {int(stats.mode(y).mode)}")
+st.header(f"Финальный результат дегустации (по шкале от 1 до 10): {int(stats.mode(y).mode)}")
