@@ -20,7 +20,7 @@ with st.sidebar:
                                           )
 
 st.title("Предсказание модели")
-X = np.fromiter((value for value in buttons.values()), float).reshape(1, -1)
+X = np.array([value for value in buttons.values()])
 y = []
 
 with open("rforest.model", "rb") as f:
