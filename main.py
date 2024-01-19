@@ -6,9 +6,6 @@ from st_pages import Page, Section, show_pages, add_page_title
 
 show_pages(
     [
-        Page("main.py", "РГР"),
-        Page("pages/about_dataset.py", "О датасете"),
-        Page("pages/visualize.py", "Визуализация"),
         Page("pages/predict.py", "Предсказание модели"),
     ]
 )
