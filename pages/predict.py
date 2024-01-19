@@ -20,7 +20,7 @@ with st.sidebar:
                                           )
 
 st.title("Предсказание модели")
-X = np.array([value for value in buttons.values()])
+X = np.array([np.array([value for value in buttons.values()])])
 print(X)
 y = []
 
