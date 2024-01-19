@@ -27,4 +27,4 @@ y = []
 with open("rforest.model", "rb") as f:
     mdl = pickle.load(f)
 prediction = mdl.predict(X)
-st.header(f"{mdl}: {prediction}")
+st.header(f"{prediction}")
