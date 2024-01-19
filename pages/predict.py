@@ -1,48 +1,29 @@
 import streamlit as st
-from lib import prediction_line, load_wineset
-from models import load_model
 import pandas as pd
-from scipy import stats
 import numpy as np
+import pickle
 
 # prediction_line = prediction_line.reset_index()
 
+df = pd.read_csv("DataExam_proc_smaller.csv")
+
 buttons = {}
 
-alpha = {
-    "fixed acidity": "Нелетучие кислоты (г/л)",
-    "volatile acidity": "Летучие кислоты (г/л)",
-    "citric acid": "Лимонная кислота (г/л)",
-    "residual sugar": "Остаточный сахар (г/л)",
-    "chlorides": "Хлориды (г/л)",
-    "free sulfur dioxide": "Свободный оксид серы (г/л)",
-    "total sulfur dioxide": "Весь оксид серы (г/л)",
-    "density": "Плотность (кг/л)",
-    "pH": "Кислотность",
-    "sulphates": "Сульфаты",
-    "alcohol": "Содержание спирта (%)",
-}
-
 with st.sidebar:
-    for column in load_wineset().drop("quality", axis = 1).columns:
-        buttons[column] = st.number_input(f"{alpha[column]} ({load_wineset()[column].min() / 1.5 :.2f} - {load_wineset()[column].max() * 1.5 :.2f})", 
-                                          min_value = load_wineset()[column].min() / 1.5,
-                                          max_value = load_wineset()[column].max() * 1.5,
-                                          value = load_wineset()[column].mean(),
+    for column in df.drop("Revenue", axis = 1).columns:
+        buttons[column] = st.number_input(f"{alpha[column]} ({df[column].min() / 1.5 :.2f} - {df[column].max() * 1.5 :.2f})", 
+                                          min_value = df[column].min() / 1.5,
+                                          max_value = df[column].max() * 1.5,
+                                          value = df[column].mean(),
                                           on_change = lambda: None,
                                           args = (),
                                           )
 
-models = ["NaiveBayes", "GradBoost", "Bagging", "Stacking", "TF_DNN"]
-
-st.title("Предсказания моделей")
+st.title("Предсказание модели")
 X = np.fromiter((value for value in buttons.values()), float).reshape(1, -1)
 y = []
 
-for model in models:
-    mdl = load_model(model)
-    prediction = mdl.predict(X)
-    y += [prediction]
-    st.subheader(f"{model}: {int(prediction)}")
-
-st.header(f"Финальный результат дегустации (по шкале от 1 до 10): {int(stats.mode(y).mode)}")
+with open("rforest.model", "rb") as f:
+    mdl = pickle.load(f)
+prediction = mdl.predict(X)
+st.header(f"{model}: {prediction}")
