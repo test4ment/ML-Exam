@@ -21,7 +21,7 @@ with st.sidebar:
 
 st.title("Предсказание модели")
 X = np.array([np.array([value for value in buttons.values()])])
-print(X)
+st.write(X)
 y = []
 
 with open("rforest.model", "rb") as f:
