@@ -11,7 +11,7 @@ buttons = {}
 
 with st.sidebar:
     for column in df.drop("Revenue", axis = 1).columns:
-        buttons[column] = st.number_input(f"{alpha[column]} ({df[column].min() / 1.5 :.2f} - {df[column].max() * 1.5 :.2f})", 
+        buttons[column] = st.number_input(f"{column} ({df[column].min() / 1.5 :.2f} - {df[column].max() * 1.5 :.2f})", 
                                           min_value = df[column].min() / 1.5,
                                           max_value = df[column].max() * 1.5,
                                           value = df[column].mean(),
